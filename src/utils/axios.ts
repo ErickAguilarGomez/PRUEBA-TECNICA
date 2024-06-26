@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const instance=axios.create({
-    baseUrl:"https://countries.trevorblades.com/"
-})
+const instance = axios.create({
+    baseURL: "https://countries.trevorblades.com/"
+});
 
-export default instance
+export default instance;
