@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import { Country } from "../interfaces/countryInterface"; 
+import CountryItem from "./CountryItem.vue";
 
 interface Props {
   countries: Country[];
@@ -16,7 +17,7 @@ const props = defineProps<Props>();
       :key="country.code" 
       class="border border-black-300 rounded p-3"
     >
-      {{ country.name }}
+      <CountryItem :country="country"></CountryItem>
     </div>
   </div>
 </template>

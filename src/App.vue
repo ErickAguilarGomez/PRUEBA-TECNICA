@@ -2,9 +2,12 @@
 import PageHeader from "./components/PageHeader.vue";
 import { onMounted, ref } from "vue";
 import axiosClient from "./utils/axios";
-import { Country } from "./interfaces/countryInterface"; 
-import CountryCard from "./components/CountryCard.vue"
+import { Country } from "./interfaces/countryInterface";
+import CountryCard from "./components/CountryCard.vue";
+
 const countries = ref<Country[]>([]);
+const busqueda = ref("");
+const paisesFiltrados = ref<Country[]>([]);
 
 const fetchCountries = async () => {
   try {
@@ -27,15 +30,22 @@ const fetchCountries = async () => {
               }
             }
           }
-        `
-      }
+        `,
+      },
     });
 
     countries.value = response.data.data.countries;
-   
+    // Inicialmente, los países filtrados son todos los países
+    paisesFiltrados.value = countries.value;
   } catch (err) {
-    console.error("Error al obtener país:", err);
+    console.error("Error al obtener países:", err);
   }
+};
+
+const filtrarPaises = () => {
+  paisesFiltrados.value = countries.value.filter((country) =>
+    country.name.toLowerCase().includes(busqueda.value.toLowerCase())
+  );
 };
 
 onMounted(() => {
@@ -43,12 +53,19 @@ onMounted(() => {
 });
 </script>
 
-
 <template>
   <PageHeader></PageHeader>
   <div class="container max-w-screen-lg my-auto px-6">
-    <CountryCard :countries="countries"></CountryCard>
+    <div class="mb-8">
+      <input
+        type="text"
+        class="border border-gray-300 rounded w-full p-1 px-4"
+        placeholder="Busca el país"
+        v-model="busqueda"
+        @input="filtrarPaises"
+      />
+    </div>
+
+    <CountryCard :countries="paisesFiltrados"></CountryCard>
   </div>
 </template>
-
-
